@@ -1,45 +1,24 @@
-# StickZap Creator Studio — Netlify Local-First Edition
+# StickZap Creator Studio — Netlify deploy package
 
-This is a new, independent project. It does not replace or delete the previous GitHub repository.
+A mobile-friendly, local-first creator planning app with Story Lab, Viral Radar, Direct Video briefs, Frame-to-frame planning, Audio script planning, and a local Project Library.
 
-## Features that work without API keys
-- Responsive dashboard and navigation
-- Local story outline generation
-- Editable/reorderable scenes
-- Local Viral Radar idea brainstorming (not live trend analytics)
-- Video production brief export (does not render video)
-- Frame upload previews and transition-plan export (does not render video)
-- Narration script preparation and export (does not synthesize audio)
-- Local project library, import/export, and deletion
-- Safe localStorage error handling and validation
+## What's included
+- Facebook Reels and Facebook Video options in Viral Radar
+- Copy idea button for generated concepts
+- Progressive Web App manifest, install prompt guidance, service worker, and 192px/512px icons
+- Netlify configuration and a simple health-check function
+- Static HTML/CSS/JavaScript; no paid API key required for planning tools
 
 ## Deploy to Netlify
-1. Download and unzip this folder.
-2. Create a new folder/repository for this new app, or upload the files into a new Replit project and connect that project to a new GitHub repository.
-3. In Netlify, choose **Add new site → Import an existing project** and connect the new repository.
-4. Build command: leave blank.
-5. Publish directory: `.` (the project root).
-6. Deploy the site.
-7. Open the deployed URL and test the checklist below.
+1. Upload the **contents** of this folder to the root of your GitHub repository. `index.html` must be at the repository root.
+2. Confirm `netlify/functions/health.mjs` is inside the `netlify/functions` folder.
+3. In Netlify, import the GitHub repository and deploy the `main` branch.
+4. The included `netlify.toml` sets publish directory to `.` and functions directory to `netlify/functions`.
+5. Open the HTTPS site in Chrome on Android. Use **Install app** in the app header, or Chrome menu (⋮) → **Install app** / **Add to Home screen**.
 
-If Netlify account credits are exhausted, a new site on the same account may still be blocked by the account's usage limit. Wait for the reset or use another compatible host. Do not create repeated sites to bypass limits.
-
-## Optional health function
-After deploying with Netlify Functions enabled, visit `/.netlify/functions/health`. It should return JSON with `"ok": true`. This endpoint contains no secrets and does not configure any AI provider.
-
-## Important limitations
-This edition is intentionally local-first. It does not yet connect Gemini, image generation, video rendering, audio synthesis, or social-media publishing. Those require separate provider integrations, current API/model verification, server-side secrets, and often have quotas or paid costs. The interface states these limitations rather than faking successful generation.
-
-## Test checklist
-- Dashboard loads and navigation switches sections.
-- Story Lab generates a local outline with no API key.
-- Scenes can be edited, reordered, and deleted.
-- Save and reopen a project.
-- Export a text outline and JSON project backup.
-- Viral Radar generates local concepts.
-- Direct Video creates and exports a brief, not a video.
-- Frame-to-frame previews valid images under 8 MB and creates a plan.
-- Audio Studio prepares and exports a script, not audio.
-- Search, import, export, and delete projects in the library.
-- Test on an Android-sized viewport.
-- Check browser console for errors.
+## Notes and limitations
+- Viral Radar ideas are generated locally and are **not live Facebook trend data**.
+- Facebook posting/publishing is not connected; this app does not request Facebook login or publish on your behalf.
+- Video rendering, audio synthesis, and cloud AI generation are not connected in this edition.
+- The service worker caches the app shell for offline fallback. Projects remain in the current browser's local storage on that device.
+- To receive updates after deploying a new version, refresh the site; if needed, close and reopen the installed app.

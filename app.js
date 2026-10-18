@@ -158,8 +158,10 @@
       const hook=document.createElement("p");hook.className="hook";hook.textContent=`Hook: ${ideaHooks[i]}`;
       const desc=document.createElement("p");desc.textContent=`Topic: ${topic}. Format: ${ideaFormats[i]} Optimized as a concept for ${platform}.`;
       const hash=document.createElement("p");hash.className="hashtags";hash.textContent=`#${topic.toLowerCase().replace(/[^a-z0-9]+/g,"").slice(0,20)||"animation"} #shortvideo #storytelling #creator`;
-      const btn=document.createElement("button");btn.className="secondary";btn.textContent="Use in Story Lab";btn.addEventListener("click",()=>{$("story-title").value=title.textContent.replace(/^\\d+\\. /,"");$("story-idea").value=`${hook.textContent}\\n\\n${desc.textContent}\\n\\nMake this into a short, engaging story with a strong visual payoff.`;go("story");toast("Idea sent to Story Lab.");});
-      card.append(title,hook,desc,hash,btn);output.append(card);
+      const actions=document.createElement("div");actions.className="button-row";
+      const btn=document.createElement("button");btn.className="secondary";btn.textContent="Use in Story Lab";btn.addEventListener("click",()=>{$("story-title").value=title.textContent.replace(/^\d+\. /,"");$("story-idea").value=`${hook.textContent}\n\n${desc.textContent}\n\n${hash.textContent}\n\nMake this into a short, engaging story with a strong visual payoff.`;go("story");toast("Idea sent to Story Lab.");});
+      const copy=document.createElement("button");copy.className="secondary";copy.textContent="Copy idea";copy.addEventListener("click",async()=>{const text=`${title.textContent}\n${hook.textContent}\n${desc.textContent}\n${hash.textContent}`;try{await navigator.clipboard.writeText(text);toast("Idea copied to clipboard.");}catch{const area=document.createElement("textarea");area.value=text;document.body.append(area);area.select();document.execCommand("copy");area.remove();toast("Idea copied.");}});
+      actions.append(btn,copy);card.append(title,hook,desc,hash,actions);output.append(card);
     }
     toast("Created six local idea concepts. These are not live trend data.");
   });

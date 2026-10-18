@@ -4,6 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#10101b">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
   <meta name="description" content="StickZap Creator Studio — plan stories, animation scenes, Shorts ideas and media workflows.">
   <title>StickZap Creator Studio</title>
   <link rel="stylesheet" href="/styles.css">
@@ -34,7 +37,7 @@
       <header class="topbar">
         <button class="icon-btn mobile-menu" id="menu-toggle" aria-label="Toggle menu">☰</button>
         <div class="breadcrumb">Workspace <span>/</span> <strong id="current-section">Dashboard</strong></div>
-        <div class="top-actions"><span class="local-pill"><span class="status-dot"></span> Local mode</span><button class="primary small" id="new-project-top">＋ New project</button></div>
+        <div class="top-actions"><span class="local-pill"><span class="status-dot"></span> Local mode</span><button class="secondary small" id="install-app" hidden>＋ Install app</button><button class="primary small" id="new-project-top">＋ New project</button></div>
       </header>
 
       <div class="page-wrap">
@@ -71,7 +74,7 @@
 
         <section class="page" id="page-viral">
           <div class="page-title"><div><div class="eyebrow">SHORT-FORM IDEAS</div><h1>Viral Radar</h1><p>Brainstorm original short-video ideas. These are creative suggestions, not live trend analytics.</p></div><span class="tag">LOCAL TOOL</span></div>
-          <div class="panel"><div class="form-row"><label>Topic or niche<input id="viral-topic" placeholder="e.g. funny animation, pets, life lessons"></label><label>Platform format<select id="viral-format"><option>YouTube Shorts</option><option>TikTok</option><option>Instagram Reels</option></select></label></div><button class="primary" id="generate-ideas">✦ Generate ideas</button><div id="ideas-output" class="idea-grid"><div class="empty-state compact"><span>◉</span><strong>Your next idea could start here</strong><p>Enter a topic to create a list of video concepts.</p></div></div></div>
+          <div class="panel"><div class="form-row"><label>Topic or niche<input id="viral-topic" placeholder="e.g. funny animation, pets, life lessons"></label><label>Platform format<select id="viral-format"><option>YouTube Shorts</option><option>TikTok</option><option>Instagram Reels</option><option>Facebook Reels</option><option>Facebook Video</option></select></label></div><button class="primary" id="generate-ideas">✦ Generate ideas</button><div id="ideas-output" class="idea-grid"><div class="empty-state compact"><span>◉</span><strong>Your next idea could start here</strong><p>Enter a topic to create a list of video concepts.</p></div></div></div>
         </section>
 
         <section class="page" id="page-video">
@@ -109,5 +112,6 @@
   <div id="toast-region" class="toast-region" aria-live="polite"></div>
   <dialog id="project-dialog"><form method="dialog" id="project-form"><div class="dialog-head"><div><span class="eyebrow">NEW WORKSPACE</span><h2>Create a project</h2></div><button class="icon-btn" value="cancel" aria-label="Close">×</button></div><label>Project name<input id="new-project-name" maxlength="100" placeholder="My animation idea" required></label><div class="dialog-actions"><button class="secondary" value="cancel">Cancel</button><button class="primary" id="create-project" value="default">Create project</button></div></form></dialog>
   <script src="/app.js" defer></script>
+  <script src="/pwa.js" defer></script>
 </body>
 </html>
