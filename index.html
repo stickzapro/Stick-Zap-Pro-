@@ -67,8 +67,25 @@
               <label>Tone<select id="story-tone"><option>Heartwarming</option><option>Funny</option><option>Cinematic</option><option>Mysterious</option><option>Inspirational</option><option>Fast-paced</option></select></label>
               <div class="button-row"><button class="primary" id="local-outline">✦ Generate local outline</button><button class="secondary" id="save-story">Save project</button></div>
               <p class="helper">This creates a useful editable outline locally. It does not call an AI service.</p>
+              <div class="story-video-panel">
+                <div class="story-video-heading"><span class="tool-icon pink">▶</span><div><strong>Turn this story into a video</strong><p>Use the story above or your current storyboard. No rewriting required.</p></div></div>
+                <div class="form-row"><label>Video style<select id="story-video-style"><option value="stick figure animation">Stick-figure animation</option><option value="2D cartoon animation">2D cartoon</option><option value="3D animated film">3D animation</option><option value="cinematic realistic film">Cinematic and realistic</option><option value="anime animation">Anime</option><option value="fantasy adventure film">Fantasy and adventure</option><option value="horror mystery film">Horror and mystery</option><option value="educational explainer video">Educational video</option><option value="vertical short-form social video">Short-form vertical social video</option></select></label><label>Aspect ratio<select id="story-video-ratio"><option value="9:16">9:16 Vertical</option><option value="16:9">16:9 Landscape</option></select></label></div>
+                <div class="form-row"><label>Duration<select id="story-video-duration"><option value="4">4 seconds</option><option value="6">6 seconds</option><option value="8" selected>8 seconds</option></select></label><label>Quality<select id="story-video-quality"><option value="720p">720p</option><option value="1080p">1080p (8 seconds only)</option><option value="4k">4K (8 seconds only)</option></select></label></div>
+                <button class="primary story-generate-btn" id="story-generate-video">▶ Generate Video from Story</button>
+                <div id="story-video-status" class="video-status" role="status" aria-live="polite">Real video generation requires a configured Gemini API key in Netlify.</div>
+                <div id="story-video-result" class="story-video-result hidden"></div>
+              </div>
             </div>
             <div class="output-panel"><div class="output-head"><div><span class="eyebrow">YOUR STORYBOARD</span><h3 id="outline-heading">Your outline will appear here</h3></div><button class="icon-btn" id="export-story" title="Export outline">⇩</button></div><div id="outline-output" class="outline-output"><div class="empty-output"><span>✧</span><p>Add a story idea, then select <strong>Generate local outline</strong>.</p></div></div></div>
+          </div>
+          <div class="panel link-story-panel gap-top">
+            <div class="output-head"><div><span class="eyebrow">VIDEO LINK → STORY</span><h3>Turn a video reference into a story</h3></div></div>
+            <label>Paste a Video Link<input id="story-video-link" type="url" placeholder="https://www.youtube.com/watch?v=…"></label>
+            <label>Transcript or captions (optional)<textarea id="story-video-transcript" rows="3" placeholder="Paste captions/transcript here if the platform does not make them accessible."></textarea></label>
+            <label class="upload-transcript-label">Or choose a video file<input id="story-video-upload" type="file" accept="video/*"></label>
+            <div id="story-link-file-note" class="helper">Video uploads are not uploaded to a server by this local-first app. If captions are unavailable, paste a transcript to create a story.</div>
+            <div class="button-row"><button class="secondary" id="story-link-to-story">Create Story from Link / Transcript</button></div>
+            <div id="story-link-status" class="video-status" role="status" aria-live="polite">Public video links may expose only title or metadata; transcripts are not guaranteed to be accessible.</div>
           </div>
         </section>
 

@@ -102,6 +102,112 @@
     renderOutline();
     toast("Local outline generated. Edit any scene to make it yours.");
   });
+  function setVideoStatus(message, type="") {
+    const el = $("story-video-status"); el.className = `video-status${type ? " " + type : ""}`; el.textContent = message;
+  }
+  function storyForVideo() {
+    const title = ($("story-title").value || currentOutlineTitle || "Untitled Story").trim();
+    const idea = $("story-idea").value.trim();
+    const scenes = currentOutline.map((scene, i) => `Scene ${i+1}: ${scene.title}. Visual action: ${scene.description}. Dialogue: ${scene.dialogue || "none"}. Camera: ${scene.shot || "clear cinematic framing"}`).join("\n");
+    const story = [idea ? `Story premise: ${idea}` : "", scenes ? `Storyboard scenes:\n${scenes}` : ""].filter(Boolean).join("\n\n");
+    return {title, story};
+  }
+  $("story-video-quality").addEventListener("change", () => {
+    if (Number($("story-video-duration").value) !== 8 && $("story-video-quality").value !== "720p") {
+      $("story-video-quality").value = "720p";
+      toast("1080p and 4K require an 8-second Veo clip. Quality reset to 720p.", "error");
+    }
+  });
+  $("story-video-duration").addEventListener("change", () => {
+    if (Number($("story-video-duration").value) !== 8 && $("story-video-quality").value !== "720p") {
+      $("story-video-quality").value = "720p";
+      toast("Quality reset to 720p because 1080p/4K require 8 seconds.", "error");
+    }
+  });
+  $("story-generate-video").addEventListener("click", async () => {
+    const {title, story} = storyForVideo();
+    if (!story.trim()) { setVideoStatus("Add a story idea or generate an outline first. You do not need to rewrite it.", "error"); $("story-idea").focus(); return; }
+    const button = $("story-generate-video"); const result = $("story-video-result");
+    button.disabled = true; result.classList.add("hidden"); result.replaceChildren();
+    const style = $("story-video-style").value;
+    const ratio = $("story-video-ratio").value;
+    const duration = Number($("story-video-duration").value);
+    const resolution = $("story-video-quality").value;
+    const prompt = `Create one coherent ${duration}-second video based on this story. Visual style: ${style}. Aspect ratio: ${ratio}. Preserve character appearance and story continuity. Condense the story into a clear visual sequence with a beginning, action, and payoff; no titles or subtitles unless story requires them. Story title: ${title}. ${story}`;
+    setVideoStatus("Starting secure video-generation job…", "working");
+    try {
+      const start = await fetch("/.netlify/functions/generate-video", {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt,aspectRatio:ratio,durationSeconds:duration,resolution,style})});
+      const started = await start.json().catch(()=>({}));
+      if (!start.ok) throw new Error(started.error || `Video service returned HTTP ${start.status}.`);
+      if (!started.operationName) throw new Error("The provider did not return a generation job ID.");
+      let finished = null;
+      for (let attempt=0; attempt<36; attempt++) {
+        setVideoStatus(`Video generation in progress… checking status (${attempt+1}/36). This may take several minutes.`, "working");
+        await new Promise(resolve=>setTimeout(resolve,8000));
+        const poll = await fetch(`/.netlify/functions/video-status?operation=${encodeURIComponent(started.operationName)}`);
+        const status = await poll.json().catch(()=>({}));
+        if (!poll.ok) throw new Error(status.error || `Could not check job status (HTTP ${poll.status}).`);
+        if (status.error) throw new Error(status.error);
+        if (status.done && status.videoUrl) { finished=status; break; }
+      }
+      if (!finished) throw new Error("This job is taking longer than expected. Check again later or try a shorter prompt; the provider may still be processing it.");
+      const video = document.createElement("video"); video.controls=true; video.playsInline=true; video.preload="metadata"; video.src=finished.videoUrl;
+      const download = document.createElement("button"); download.className="primary"; download.textContent="Download video";
+      download.addEventListener("click", async () => {
+        download.disabled=true; const oldLabel=download.textContent; download.textContent="Preparing download…";
+        try {
+          const parts=[]; let start=0; const chunkSize=2*1024*1024; let total=null;
+          while(total===null || start<total) {
+            const end=start+chunkSize-1;
+            const chunk=await fetch(finished.videoUrl,{headers:{Range:`bytes=${start}-${end}`}});
+            if(!chunk.ok && chunk.status!==206) throw new Error(`Download failed (HTTP ${chunk.status}).`);
+            const bytes=await chunk.arrayBuffer(); parts.push(bytes);
+            const range=chunk.headers.get("content-range");
+            if(range) { const match=range.match(/bytes\s+\d+-\d+\/(\d+)/i); if(match) total=Number(match[1]); }
+            if(chunk.status!==206) { total=bytes.byteLength; break; }
+            if(bytes.byteLength===0) throw new Error("The provider returned an empty video chunk.");
+            start+=bytes.byteLength;
+            if(total===null && bytes.byteLength<chunkSize) { total=start; break; }
+            download.textContent=`Downloading… ${total ? Math.min(100,Math.round(start/total*100)) : ""}%`;
+            if(parts.length>100) throw new Error("Video download exceeded the safety limit.");
+          }
+          const blob=new Blob(parts,{type:"video/mp4"}); const localUrl=URL.createObjectURL(blob); const a=document.createElement("a");a.href=localUrl;a.download=`${slug(title)}-video.mp4`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(localUrl),60000);download.textContent="Download again";
+        } catch(err) { setVideoStatus(`Video generated, but download failed: ${err.message}. The provider file may have expired or may not support byte-range downloads.`, "error"); download.textContent=oldLabel; }
+        finally { download.disabled=false; }
+      });
+      const note=document.createElement("p");note.className="helper";note.textContent="Generated with Google Veo. Provider-hosted video files are temporary; download a copy to keep it.";
+      result.append(video,download,note); result.classList.remove("hidden");
+      setVideoStatus("Video generated successfully. Preview it below and download a copy.", "success");
+    } catch (error) {
+      setVideoStatus(`${error.message || "Video generation failed."} Check Netlify function logs and confirm GEMINI_API_KEY is set in Netlify → Site configuration → Environment variables.`, "error");
+    } finally { button.disabled=false; }
+  });
+  $("story-link-to-story").addEventListener("click", async () => {
+    const link=$("story-video-link").value.trim(); const transcript=$("story-video-transcript").value.trim();
+    const file=$("story-video-upload").files?.[0]; const status=$("story-link-status");
+    status.className="video-status working";
+    if (transcript) {
+      $("story-title").value=$("story-title").value.trim() || "Story from video transcript";
+      $("story-idea").value=transcript;
+      currentOutlineTitle=$("story-title").value;
+      currentOutline=makeOutline(transcript,$("story-genre").value,$("story-tone").value,Number($("story-length").value)||5);
+      renderOutline(); status.className="video-status success";status.textContent="Story created from the transcript. Review the outline above, then choose Generate Video from Story."; toast("Story created from transcript."); return;
+    }
+    if (file) {
+      status.className="video-status error"; status.textContent=`Selected ${file.name} (${Math.round(file.size/1024/1024*10)/10} MB). This version does not upload or analyze video files; paste accessible captions/transcript above, then press this button again.`; return;
+    }
+    if (!link) {status.className="video-status error";status.textContent="Paste a video link or provide a transcript first.";return;}
+    try {
+      const response=await fetch("/.netlify/functions/video-link-story",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({url:link})});
+      const data=await response.json().catch(()=>({}));
+      if (!response.ok) throw new Error(data.error||`Could not inspect this link (HTTP ${response.status}).`);
+      if(data.title) { $("story-title").value=$("story-title").value.trim()||`${data.title} — Story`; }
+      status.className="video-status";
+      status.textContent=(data.title?`Found title: ${data.title}. `:"")+`${data.message||"Captions or a transcript were not available from this link."} Paste the captions/transcript above to turn the source into a story. This app does not download protected videos.`;
+    } catch(error) {status.className="video-status error";status.textContent=`${error.message} If the platform blocks access, paste its captions/transcript instead.`;}
+  });
+  $("story-video-upload").addEventListener("change", e => { const f=e.target.files?.[0]; if(f) $("story-link-file-note").textContent=`Selected ${f.name}. This local-first edition does not upload or analyze the file; paste a transcript/captions to create a story.`; });
+
   function renderOutline() {
     $("outline-heading").textContent = currentOutlineTitle || "Your storyboard";
     const out = $("outline-output"); out.replaceChildren();
