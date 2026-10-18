@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10101b">
+  <meta name="description" content="StickZap Creator Studio — plan stories, animation scenes, Shorts ideas and media workflows.">
+  <title>StickZap Creator Studio</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#" data-page="dashboard" aria-label="StickZap Creator Studio home">
+        <span class="brand-mark">SZ</span><span><strong>StickZap</strong><small>CREATOR STUDIO</small></span>
+      </a>
+      <div class="side-label">WORKSPACE</div>
+      <nav id="navigation" aria-label="Main navigation">
+        <button class="nav-item active" data-page="dashboard"><span>◈</span> Dashboard</button>
+        <button class="nav-item" data-page="story"><span>✦</span> Story Lab</button>
+        <button class="nav-item" data-page="viral"><span>◉</span> Viral Radar</button>
+        <button class="nav-item" data-page="video"><span>▶</span> Direct Video</button>
+        <button class="nav-item" data-page="frames"><span>▧</span> Frame-to-frame</button>
+        <button class="nav-item" data-page="audio"><span>♫</span> Audio Studio</button>
+        <button class="nav-item" data-page="library"><span>▤</span> Project Library</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="status-card"><span class="status-dot"></span><div><strong>Local studio ready</strong><small>No AI key required for planning</small></div></div>
+        <button class="nav-item" data-page="settings"><span>⚙</span> Settings & setup</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="icon-btn mobile-menu" id="menu-toggle" aria-label="Toggle menu">☰</button>
+        <div class="breadcrumb">Workspace <span>/</span> <strong id="current-section">Dashboard</strong></div>
+        <div class="top-actions"><span class="local-pill"><span class="status-dot"></span> Local mode</span><button class="primary small" id="new-project-top">＋ New project</button></div>
+      </header>
+
+      <div class="page-wrap">
+        <section class="page active" id="page-dashboard">
+          <div class="hero">
+            <div class="hero-copy"><div class="eyebrow">YOUR CREATIVE WORKSPACE</div><h1>Make something<br><span>worth watching.</span></h1><p>Plan stories, shape scenes, and prepare your next animation or short-form video — all from one studio.</p><button class="primary" data-page="story">✦ Start a story <span>→</span></button></div>
+            <div class="hero-art" aria-hidden="true"><div class="orb orb-one"></div><div class="orb orb-two"></div><div class="hero-card"><div class="mini-top"><span>STORYBOARD</span><span class="mini-dot"></span></div><div class="mini-scene scene-a">✦</div><div class="mini-lines"><i></i><i></i><i></i></div><div class="mini-bottom"><span>SCENE 01</span><b>01 / 06</b></div></div><div class="floating-chip chip-a">✧ Idea to story</div><div class="floating-chip chip-b">▶ Creator tools</div></div>
+          </div>
+          <div class="section-heading"><div><div class="eyebrow">QUICK ACCESS</div><h2>Your creative tools</h2></div><span class="muted" id="project-count">0 saved projects</span></div>
+          <div class="tool-grid">
+            <button class="tool-card" data-page="story"><span class="tool-icon purple">✦</span><span class="tool-title">Story Lab</span><span class="tool-desc">Turn a simple idea into a scene-by-scene outline.</span><span class="tool-link">Open Story Lab ↗</span></button>
+            <button class="tool-card" data-page="viral"><span class="tool-icon blue">◉</span><span class="tool-title">Viral Radar</span><span class="tool-desc">Create Shorts concepts, hooks, titles, and hashtags.</span><span class="tool-link">Explore ideas ↗</span></button>
+            <button class="tool-card" data-page="video"><span class="tool-icon pink">▶</span><span class="tool-title">Direct Video</span><span class="tool-desc">Prepare prompts and export a production brief.</span><span class="tool-link">Build a brief ↗</span></button>
+            <button class="tool-card" data-page="frames"><span class="tool-icon gold">▧</span><span class="tool-title">Frame-to-frame</span><span class="tool-desc">Preview reference frames and plan transitions.</span><span class="tool-link">Open frame tools ↗</span></button>
+          </div>
+          <div class="section-heading lower"><div><div class="eyebrow">PICK UP WHERE YOU LEFT OFF</div><h2>Recent projects</h2></div><button class="text-btn" data-page="library">View library →</button></div>
+          <div id="recent-projects" class="recent-list"><div class="empty-state"><span>▤</span><strong>Your next idea starts here</strong><p>Create a project and it will appear here.</p><button class="secondary" id="new-project-empty">Create first project</button></div></div>
+        </section>
+
+        <section class="page" id="page-story">
+          <div class="page-title"><div><div class="eyebrow">IDEA → STORYBOARD</div><h1>Story Lab</h1><p>Build a story and turn it into a practical scene plan. Local outline works without an AI API.</p></div><span class="tag">LOCAL TOOL</span></div>
+          <div class="panel two-col">
+            <div class="form-stack">
+              <label>Project title<input id="story-title" placeholder="e.g. The Last Paper Dragon" maxlength="100"></label>
+              <label>Story idea<textarea id="story-idea" rows="4" placeholder="A young inventor discovers a paper dragon that comes alive..."></textarea></label>
+              <div class="form-row"><label>Genre<select id="story-genre"><option>Adventure</option><option>Comedy</option><option>Fantasy</option><option>Drama</option><option>Science fiction</option><option>Horror</option><option>Educational</option></select></label><label>Target length<select id="story-length"><option value="3">3 scenes</option><option value="5" selected>5 scenes</option><option value="7">7 scenes</option></select></label></div>
+              <label>Tone<select id="story-tone"><option>Heartwarming</option><option>Funny</option><option>Cinematic</option><option>Mysterious</option><option>Inspirational</option><option>Fast-paced</option></select></label>
+              <div class="button-row"><button class="primary" id="local-outline">✦ Generate local outline</button><button class="secondary" id="save-story">Save project</button></div>
+              <p class="helper">This creates a useful editable outline locally. It does not call an AI service.</p>
+            </div>
+            <div class="output-panel"><div class="output-head"><div><span class="eyebrow">YOUR STORYBOARD</span><h3 id="outline-heading">Your outline will appear here</h3></div><button class="icon-btn" id="export-story" title="Export outline">⇩</button></div><div id="outline-output" class="outline-output"><div class="empty-output"><span>✧</span><p>Add a story idea, then select <strong>Generate local outline</strong>.</p></div></div></div>
+          </div>
+        </section>
+
+        <section class="page" id="page-viral">
+          <div class="page-title"><div><div class="eyebrow">SHORT-FORM IDEAS</div><h1>Viral Radar</h1><p>Brainstorm original short-video ideas. These are creative suggestions, not live trend analytics.</p></div><span class="tag">LOCAL TOOL</span></div>
+          <div class="panel"><div class="form-row"><label>Topic or niche<input id="viral-topic" placeholder="e.g. funny animation, pets, life lessons"></label><label>Platform format<select id="viral-format"><option>YouTube Shorts</option><option>TikTok</option><option>Instagram Reels</option></select></label></div><button class="primary" id="generate-ideas">✦ Generate ideas</button><div id="ideas-output" class="idea-grid"><div class="empty-state compact"><span>◉</span><strong>Your next idea could start here</strong><p>Enter a topic to create a list of video concepts.</p></div></div></div>
+        </section>
+
+        <section class="page" id="page-video">
+          <div class="page-title"><div><div class="eyebrow">VIDEO PRODUCTION</div><h1>Direct Video</h1><p>Prepare a production-ready prompt and brief. Video rendering requires a configured external provider.</p></div><span class="tag warning-tag">PROVIDER REQUIRED</span></div>
+          <div class="panel two-col">
+            <div class="form-stack"><label>Describe your video<textarea id="video-prompt" rows="5" placeholder="A tiny paper dragon flies through a lantern-lit Thai night market..."></textarea></label><div class="form-row"><label>Aspect ratio<select id="video-ratio"><option>9:16 Vertical</option><option>16:9 Landscape</option><option>1:1 Square</option></select></label><label>Duration<select id="video-duration"><option>5 seconds</option><option>10 seconds</option><option>15 seconds</option><option>30 seconds</option></select></label></div><label>Visual style<input id="video-style" placeholder="Cinematic 3D animation, warm lighting"></label><div class="button-row"><button class="primary" id="make-video-brief">Create production brief</button><button class="secondary" id="video-provider">Check provider setup</button></div></div>
+            <div class="output-panel"><div class="output-head"><div><span class="eyebrow">PRODUCTION BRIEF</span><h3>Video plan</h3></div><button class="icon-btn" id="export-video-brief" title="Export brief">⇩</button></div><div id="video-output" class="empty-output"><span>▶</span><p>Describe your video to create an exportable brief.</p></div><div class="notice"><strong>Video generation isn't connected yet.</strong><p>This version will not pretend to render a video. Connect a compatible provider on the server before enabling real generation.</p></div></div>
+          </div>
+        </section>
+
+        <section class="page" id="page-frames">
+          <div class="page-title"><div><div class="eyebrow">VISUAL CONTINUITY</div><h1>Frame-to-frame</h1><p>Upload reference frames, preview them, and write a transition plan. Rendering requires a compatible provider.</p></div><span class="tag warning-tag">PLANNING MODE</span></div>
+          <div class="panel"><div class="frame-grid"><label class="upload-box" for="first-frame"><span class="upload-symbol">＋</span><strong>First frame</strong><small>Choose an image from your device</small><input type="file" id="first-frame" accept="image/png,image/jpeg,image/webp"></label><label class="upload-box" for="last-frame"><span class="upload-symbol">＋</span><strong>Last frame</strong><small>Choose an image from your device</small><input type="file" id="last-frame" accept="image/png,image/jpeg,image/webp"></label></div><div class="form-stack gap-top"><label>Describe the transition<textarea id="frame-transition" rows="3" placeholder="The character turns toward the glowing doorway; camera slowly pushes in..."></textarea></label><button class="primary" id="make-frame-plan">Create transition plan</button></div><div id="frame-plan-output" class="result-box hidden"></div><div class="notice"><strong>Privacy note</strong><p>Image previews are handled in your browser. Files are not uploaded to an AI service by this local planning tool.</p></div></div>
+        </section>
+
+        <section class="page" id="page-audio">
+          <div class="page-title"><div><div class="eyebrow">VOICE & SOUND</div><h1>Audio Studio</h1><p>Prepare narration and export a script. Audio synthesis requires a configured provider.</p></div><span class="tag warning-tag">SCRIPT MODE</span></div>
+          <div class="panel two-col"><div class="form-stack"><label>Audio or narration text<textarea id="audio-text" rows="7" placeholder="Write the narration you want to record or synthesize..."></textarea></label><div class="form-row"><label>Delivery style<select id="audio-style"><option>Warm storyteller</option><option>Energetic narrator</option><option>Calm and thoughtful</option><option>Documentary</option></select></label><label>Language<select id="audio-language"><option>English</option><option>Thai</option><option>English and Thai</option></select></label></div><div class="button-row"><button class="primary" id="prepare-audio">Prepare narration script</button><button class="secondary" id="export-audio">Export script</button></div></div><div class="output-panel"><div class="output-head"><div><span class="eyebrow">SCRIPT PREVIEW</span><h3>Narration</h3></div></div><div id="audio-output" class="empty-output"><span>♫</span><p>Your narration script will appear here.</p></div><div class="notice"><strong>Audio generation isn't connected.</strong><p>No audio file will be fabricated. Export the script to record it or use a supported audio provider.</p></div></div></div>
+        </section>
+
+        <section class="page" id="page-library">
+          <div class="page-title"><div><div class="eyebrow">YOUR WORK</div><h1>Project Library</h1><p>Your saved projects are stored in this browser on this device.</p></div><button class="primary" id="new-project-library">＋ New project</button></div>
+          <div class="panel"><div class="library-actions"><label class="search-label">⌕ <input id="library-search" placeholder="Search projects..."></label><button class="secondary" id="import-projects">Import JSON</button><input type="file" id="import-file" accept="application/json" hidden></div><div id="library-list" class="library-list"></div></div>
+        </section>
+
+        <section class="page" id="page-settings">
+          <div class="page-title"><div><div class="eyebrow">CONFIGURATION</div><h1>Settings & setup</h1><p>Check the app environment and understand what needs a provider.</p></div></div>
+          <div class="settings-grid"><div class="panel"><span class="tool-icon purple">✓</span><h3>Local tools</h3><p>Story outlines, idea brainstorming, scene editing, project storage and text exports run locally.</p><span class="tag">READY</span></div><div class="panel"><span class="tool-icon blue">◇</span><h3>AI text generation</h3><p>Not connected in this starter release. A secure server-side provider integration can be added later.</p><span class="tag warning-tag">NOT CONFIGURED</span></div><div class="panel"><span class="tool-icon pink">▶</span><h3>Video and audio</h3><p>Requires a compatible provider, credentials, supported models and possibly paid usage.</p><span class="tag warning-tag">NOT CONFIGURED</span></div><div class="panel"><span class="tool-icon gold">▤</span><h3>Data & privacy</h3><p>Projects stay in this browser unless you export them. Clearing browser data may remove local projects.</p><button class="secondary" id="export-all">Export all projects</button><button class="danger-button" id="clear-data">Clear local projects</button></div></div>
+        </section>
+
+        <footer><span>StickZap Creator Studio <span class="muted">· Local-first edition</span></span><span class="muted">Made for creators, built to be honest.</span></footer>
+      </div>
+    </main>
+  </div>
+  <div id="toast-region" class="toast-region" aria-live="polite"></div>
+  <dialog id="project-dialog"><form method="dialog" id="project-form"><div class="dialog-head"><div><span class="eyebrow">NEW WORKSPACE</span><h2>Create a project</h2></div><button class="icon-btn" value="cancel" aria-label="Close">×</button></div><label>Project name<input id="new-project-name" maxlength="100" placeholder="My animation idea" required></label><div class="dialog-actions"><button class="secondary" value="cancel">Cancel</button><button class="primary" id="create-project" value="default">Create project</button></div></form></dialog>
+  <script src="/app.js" defer></script>
+</body>
+</html>

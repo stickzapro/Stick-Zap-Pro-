@@ -1,0 +1,2 @@
+# Netlify's default static routing is sufficient for this single-page app.
+# Do not rewrite missing JS files to index.html; missing assets should remain visible as 404s.
